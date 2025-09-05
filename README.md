@@ -1,121 +1,98 @@
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Happy Onam 💌</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(#fff8e1, #ffecb3);
-      overflow: hidden;
-      font-family: 'Georgia', serif;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Anniversary Jerry 💙</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #add8e6, #ffe4e1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Segoe UI", Arial, sans-serif;
+    overflow: hidden;
+    color: #ff69b4;
+    text-align: center;
+    padding: 20px;
+    cursor: pointer;
+  }
 
-    /* Center container */
-    .container {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
+  .message {
+    font-size: 1.8rem;
+    line-height: 1.6;
+    opacity: 0;
+    transition: opacity 1s;
+  }
 
-    /* Tap to open text */
-    .tap-text {
-      font-size: 22px;
-      font-weight: bold;
-      color: #8b4513;
-      cursor: pointer;
-      animation: blink 1.2s infinite;
-    }
-    @keyframes blink {
-      50% { opacity: 0.4; }
-    }
+  .hearts {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
 
-    /* Message card */
-    .message-card {
-      max-width: 350px;
-      padding: 25px;
-      background: #fffdf5;
-      border: 2px solid gold;
-      border-radius: 12px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-      font-size: 16px;
-      line-height: 1.6;
-      color: #333;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 1.5s ease;
-      display: none;
-    }
-    .show-message {
-      display: block;
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .heart {
+    position: absolute;
+    bottom: -50px;
+    font-size: 2rem;
+    animation: floatUp 6s linear infinite;
+  }
 
-    /* Falling flowers */
-    .flower {
-      position: absolute;
-      top: -50px;
-      font-size: 22px;
-      animation: fall linear infinite;
-    }
-    @keyframes fall {
-      0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-    }
-  </style>
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-110vh) scale(0.5); opacity: 0; }
+  }
+</style>
 </head>
 <body>
 
-  <div class="container">
-    <div id="tapText" class="tap-text">👉 Tap here 💌</div>
+<div class="message" id="msg">👉 Tap anywhere to start 💖</div>
+<div class="hearts" id="hearts"></div>
 
-    <div id="message" class="message-card">
-      <p><b>Happy Onam, Nanna Priya ❤️</b></p>
-      <p>I know in this special festival I am not with you,<br>
-      but my blessings and love are always with you. 🌸</p>
-      <p>This festival brings colors of joy and new moments of happiness,<br>
-      and I wish your life always shines with the same light. ✨</p>
-      <p>Today is for you celebrate, smile, and enjoy every bit of Onam. ❤️</p>
-      <p><b>Akshat</b></p>
-    </div>
-  </div>
+<script>
+  const messages = [
+    "🙈 Arre Jerry... tum to bhool gayi na? (thoda taunt 😜)",
+    "😌 Ab koi baat nahi... shayad festival ke chakkar me reh gaya hoga.",
+    "💙 Happy Anniversary my dear Jerry 💙<br>I love you so much — not just for these 5 months or 5 years... but lifelong.",
+    "💍 Main hamesha tumhare saath rahunga. Mujhe pata hai mera pyaar kabhi-kabhi filmy lagta hai, <br>lekin meri jaan... ye bilkul real hai.",
+    "🌸 Main tumse kabhi nahi thakunga, na hi kabhi chhod kar jaaunga. <br>Bas tumhe pareshan karta rahunga aur tumhe jealous bhi banata rahunga. 😘",
+    "🤗 Mujhe ye bolne me raat lag gayi... <br>par main chahata tha ye sab uss waqt bolun jab tum mere liye free ho.",
+    "😭 I’m missing you so much... Jaldi milo mujhe. <br>Milte hi ek tight sa hug dena please. ❤️",
+    "💖 I love you forever... and ever... and ever 💖"
+  ];
 
-  <!-- Music -->
-  <audio id="music" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_69e4b5c6e4.mp3?filename=kerala-traditional-instrumental-10446.mp3" type="audio/mpeg">
-  </audio>
+  const msgBox = document.getElementById("msg");
+  let index = -1;
 
-  <script>
-    const tapText = document.getElementById("tapText");
-    const message = document.getElementById("message");
-    const music = document.getElementById("music");
-
-    tapText.addEventListener("click", () => {
-      tapText.style.display = "none";     // hide tap text
-      message.style.display = "block";    // show card
-      setTimeout(() => message.classList.add("show-message"), 50);
-      music.play();
-    });
-
-    // Falling flowers
-    function createFlower() {
-      const flower = document.createElement("div");
-      flower.classList.add("flower");
-      flower.innerText = "🌸";
-      flower.style.left = Math.random() * 100 + "vw";
-      flower.style.animationDuration = (3 + Math.random() * 5) + "s";
-      document.body.appendChild(flower);
-      setTimeout(() => flower.remove(), 8000);
+  function showNextMessage() {
+    if (index < messages.length - 1) {
+      index++;
+      msgBox.style.opacity = 0;
+      setTimeout(() => {
+        msgBox.innerHTML = messages[index];
+        msgBox.style.opacity = 1;
+      }, 500);
     }
-    setInterval(createFlower, 800);
-  </script>
+  }
+
+  document.body.addEventListener("click", showNextMessage);
+
+  // Floating hearts
+  const heartsContainer = document.getElementById("hearts");
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "❤";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.color = Math.random() > 0.5 ? "deeppink" : "hotpink";
+    heart.style.animationDuration = 4 + Math.random() * 3 + "s";
+    heartsContainer.appendChild(heart);
+    setTimeout(() => heart.remove(), 7000);
+  }
+  setInterval(createHeart, 600);
+</script>
 
 </body>
 </html>
